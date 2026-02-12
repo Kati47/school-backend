@@ -26,6 +26,8 @@ Production-grade Node.js (Express) + MongoDB backend for a School Management Sys
 - POST /auth/register
 - POST /auth/login
 - POST /auth/refresh
+- POST /auth/forgot-password
+- POST /auth/reset-password
 - GET /users
 - /profiles/*
 - /academics/*
@@ -40,3 +42,13 @@ Production-grade Node.js (Express) + MongoDB backend for a School Management Sys
 ## Notes
 - Payment integrations are stubs; replace with real Stripe/PayPal SDK calls.
 - File uploads store files in UPLOAD_DIR.
+
+## Email (Password Reset)
+Set these env vars to enable password reset emails via Nodemailer:
+- APP_BASE_URL
+- SMTP_HOST
+- SMTP_PORT
+- SMTP_USER
+- SMTP_PASS
+- SMTP_FROM
+- SMTP_SECURE

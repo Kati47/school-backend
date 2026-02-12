@@ -29,3 +29,20 @@ export const refreshSchema = z.object({
   params: z.object({}).optional(),
   query: z.object({}).optional()
 });
+
+export const forgotPasswordSchema = z.object({
+  body: z.object({
+    email: z.string().email()
+  }),
+  params: z.object({}).optional(),
+  query: z.object({}).optional()
+});
+
+export const resetPasswordSchema = z.object({
+  body: z.object({
+    token: z.string().min(10),
+    password: z.string().min(6)
+  }),
+  params: z.object({}).optional(),
+  query: z.object({}).optional()
+});

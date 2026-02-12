@@ -9,6 +9,8 @@ export interface UserDocument extends Document {
   phone?: string;
   password: string;
   isActive: boolean;
+  passwordResetTokenHash?: string;
+  passwordResetExpires?: Date;
   createdAt: Date;
 }
 
@@ -24,7 +26,9 @@ const userSchema = new Schema<UserDocument>(
     email: { type: String, required: true, unique: true, lowercase: true },
     phone: { type: String },
     password: { type: String, required: true },
-    isActive: { type: Boolean, default: true }
+    isActive: { type: Boolean, default: true },
+    passwordResetTokenHash: { type: String },
+    passwordResetExpires: { type: Date }
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );

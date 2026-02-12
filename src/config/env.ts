@@ -20,6 +20,13 @@ export const env = {
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:3000",
   UPLOAD_DIR: process.env.UPLOAD_DIR || "uploads",
+  APP_BASE_URL: process.env.APP_BASE_URL || "http://localhost:3000",
+  SMTP_HOST: process.env.SMTP_HOST || "",
+  SMTP_PORT: Number(process.env.SMTP_PORT || 587),
+  SMTP_USER: process.env.SMTP_USER || "",
+  SMTP_PASS: process.env.SMTP_PASS || "",
+  SMTP_FROM: process.env.SMTP_FROM || "",
+  SMTP_SECURE: (process.env.SMTP_SECURE || "").toLowerCase() === "true",
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || "",
   PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID || "",
   PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET || ""

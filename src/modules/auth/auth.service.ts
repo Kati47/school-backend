@@ -1,7 +1,10 @@
+import crypto from "crypto";
 import { User } from "../users/user.model";
 import { ApiError } from "../../common/utils/ApiError";
 import { comparePassword, hashPassword } from "../../common/utils/password";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../../common/utils/jwt";
+import { env } from "../../config/env";
+import { sendPasswordResetEmail } from "../../common/utils/mailer";
 
 export async function registerUser(payload: {
   role: string;
@@ -56,4 +59,43 @@ export async function refreshTokens(refreshToken: string) {
     accessToken: signAccessToken({ sub: user.id, role: user.role }),
     refreshToken: signRefreshToken({ sub: user.id, role: user.role })
   };
+}
+
+export async function requestPasswordReset(email: string) {
+  const user = await User.findOne({ email: email.toLowerCase() });
+  if (!user) {
+    return { message: "If the account exists, a reset link was sent" };
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+  const expires = new Date(Date.now() + 1000 * 60 * 15);
+
+  user.passwordResetTokenHash = tokenHash;
+  user.passwordResetExpires = expires;
+  await user.save();
+
+  const resetLink = `${env.APP_BASE_URL}/reset-password?token=${token}`;
+  await sendPasswordResetEmail(user.email, resetLink);
+
+  return { message: "If the account exists, a reset link was sent" };
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await User.findOne({
+    passwordResetTokenHash: tokenHash,
+    passwordResetExpires: { $gt: new Date() }
+  });
+
+  if (!user) {
+    throw new ApiError(400, "Invalid or expired reset token");
+  }
+
+  user.password = await hashPassword(newPassword);
+  user.passwordResetTokenHash = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  return { message: "Password reset successfully" };
 }
