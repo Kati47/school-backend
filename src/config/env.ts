@@ -27,6 +27,9 @@ export const env = {
   SMTP_PASS: process.env.SMTP_PASS || "",
   SMTP_FROM: process.env.SMTP_FROM || "",
   SMTP_SECURE: (process.env.SMTP_SECURE || "").toLowerCase() === "true",
+  EMAIL_VERIFICATION_TOKEN_TTL_MINUTES: Number(process.env.EMAIL_VERIFICATION_TOKEN_TTL_MINUTES || 60),
+  LOGIN_LOCK_MAX_ATTEMPTS: Number(process.env.LOGIN_LOCK_MAX_ATTEMPTS || 5),
+  LOGIN_LOCK_MINUTES: Number(process.env.LOGIN_LOCK_MINUTES || 15),
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || "",
   PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID || "",
   PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET || ""

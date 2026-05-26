@@ -21,9 +21,25 @@ Production-grade Node.js (Express) + MongoDB backend for a School Management Sys
 - npm run dev
 - npm run build
 - npm run start
+- npm run lint
+- npm run test
+- npm run test:cov
+- npm run format
+
+## Quality and CI
+- ESLint + Prettier configured
+- Jest + Supertest test setup with coverage output
+- Husky pre-commit hook (`lint` + `test`)
+- GitHub Actions CI/CD in `.github/workflows/ci-cd.yml`
+
+## API Documentation
+- Swagger UI: `GET /docs`
+- Liveness: `GET /health/live`
+- Readiness: `GET /health/ready`
 
 ## API Overview
 - POST /auth/register
+- POST /auth/verify-email
 - POST /auth/login
 - POST /auth/refresh
 - POST /auth/forgot-password
@@ -42,6 +58,15 @@ Production-grade Node.js (Express) + MongoDB backend for a School Management Sys
 ## Notes
 - Payment integrations are stubs; replace with real Stripe/PayPal SDK calls.
 - File uploads store files in UPLOAD_DIR.
+
+## Additional Documentation
+- Architecture: `docs/architecture.md`
+- Database schema: `docs/database-schema.md`
+- Frontend API integration: `docs/frontend-api-integration.md`
+- Roadmap: `docs/roadmap.md`
+- Deployment: `docs/deployment.md`
+- Development setup: `docs/development-setup.md`
+- Contribution guide: `CONTRIBUTING.md`
 
 ## Email (Password Reset)
 Set these env vars to enable password reset emails via Nodemailer:

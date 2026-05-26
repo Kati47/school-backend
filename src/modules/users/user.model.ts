@@ -9,6 +9,11 @@ export interface UserDocument extends Document {
   phone?: string;
   password: string;
   isActive: boolean;
+  emailVerified: boolean;
+  emailVerificationTokenHash?: string;
+  emailVerificationExpires?: Date;
+  failedLoginAttempts: number;
+  lockUntil?: Date;
   passwordResetTokenHash?: string;
   passwordResetExpires?: Date;
   createdAt: Date;
@@ -27,6 +32,11 @@ const userSchema = new Schema<UserDocument>(
     phone: { type: String },
     password: { type: String, required: true },
     isActive: { type: Boolean, default: true },
+    emailVerified: { type: Boolean, default: false },
+    emailVerificationTokenHash: { type: String },
+    emailVerificationExpires: { type: Date },
+    failedLoginAttempts: { type: Number, default: 0 },
+    lockUntil: { type: Date },
     passwordResetTokenHash: { type: String },
     passwordResetExpires: { type: Date }
   },

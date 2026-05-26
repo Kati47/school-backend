@@ -2,11 +2,14 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
 import { rateLimiter } from "./common/middleware/rateLimit";
 import { errorHandler } from "./common/middleware/errorHandler";
 import { notFoundHandler } from "./common/middleware/notFoundHandler";
 import { env } from "./config/env";
+import { openApiSpec } from "./docs/openapi";
 import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/users/user.routes";
 import profileRoutes from "./modules/profiles/profile.routes";
@@ -31,9 +34,33 @@ app.use(rateLimiter);
 
 const uploadsPath = path.resolve(env.UPLOAD_DIR);
 app.use("/uploads", express.static(uploadsPath));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", env: env.NODE_ENV });
+  const readyState = mongoose.connection.readyState;
+  const dbReady = readyState === 1;
+
+  res.status(dbReady ? 200 : 503).json({
+    status: dbReady ? "ok" : "degraded",
+    env: env.NODE_ENV,
+    db: {
+      ready: dbReady,
+      state: readyState
+    }
+  });
+});
+
+app.get("/health/live", (_req, res) => {
+  res.status(200).json({ status: "alive" });
+});
+
+app.get("/health/ready", (_req, res) => {
+  const dbReady = mongoose.connection.readyState === 1;
+  if (!dbReady) {
+    return res.status(503).json({ status: "not_ready", db: "disconnected" });
+  }
+
+  return res.status(200).json({ status: "ready" });
 });
 
 app.use("/auth", authRoutes);

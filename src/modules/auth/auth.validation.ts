@@ -46,3 +46,11 @@ export const resetPasswordSchema = z.object({
   params: z.object({}).optional(),
   query: z.object({}).optional()
 });
+
+export const verifyEmailSchema = z.object({
+  body: z.object({
+    token: z.string().min(10)
+  }),
+  params: z.object({}).optional(),
+  query: z.object({}).optional()
+});

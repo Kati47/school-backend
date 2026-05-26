@@ -3,3 +3,5 @@ dist
 .env
 uploads
 tmp-upload.txt
+coverage
+.husky/_

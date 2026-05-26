@@ -26,7 +26,7 @@ export function initSocket(server: HttpServer) {
       socket.data.userId = payload.sub;
       socket.data.role = payload.role;
       return next();
-    } catch (error) {
+    } catch (_error) {
       return next(new Error("Unauthorized"));
     }
   });

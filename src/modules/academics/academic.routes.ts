@@ -43,7 +43,7 @@ router.use(
       const notifications = admins.map((admin) => ({
         userId: admin._id,
         title: "Timetable created",
-        body: `A timetable entry was created for class ${String((doc as { classId: string }).classId)}.`,
+        body: `A timetable entry was created for class ${String(doc.classId)}.`,
         type: "TIMETABLE"
       }));
       if (notifications.length) {
@@ -56,7 +56,7 @@ router.use(
       const notifications = admins.map((admin) => ({
         userId: admin._id,
         title: "Timetable updated",
-        body: `A timetable entry was updated for class ${String((doc as { classId: string }).classId)}.`,
+        body: `A timetable entry was updated for class ${String(doc.classId)}.`,
         type: "TIMETABLE"
       }));
       if (notifications.length) {
@@ -69,7 +69,7 @@ router.use(
       const notifications = admins.map((admin) => ({
         userId: admin._id,
         title: "Timetable canceled",
-        body: `A timetable entry was canceled for class ${String((doc as { classId: string }).classId)}.`,
+        body: `A timetable entry was canceled for class ${String(doc.classId)}.`,
         type: "TIMETABLE"
       }));
       if (notifications.length) {
